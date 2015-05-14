@@ -7,7 +7,7 @@ License: GPL v3
 Text Domain: post-type-archive-descriptions
 Domain Path: /languages/
 
-CPT Descriptions
+Post Type Archive Descriptions
 Copyright (C) 2015, Mark Root-Wiley - info@MRWweb.com
 
 This program is free software: you can redistribute it and/or modify
@@ -144,7 +144,7 @@ function post_type_desc_register_settings() {
 			// Field for our setting
 			add_settings_field(
 				'ptad_setting_' . $post_type, // $id
-				__( 'Description Text', 'cptddescriptions' ), // $title
+				__( 'Description Text', 'post-type-archive-descriptions' ), // $title
 				'ptad_editor_field', // $callback
 				$post_type . '-description', // $page
 				'ptad_settings_section_' . $post_type, // $section
@@ -184,7 +184,7 @@ function ptad_editor_field( $args ) {
 		'textarea_rows' => 15,
 		'media_buttons' => true
 	);
-	wp_editor( $description, 'cptddescription', $editor_settings );
+	wp_editor( $description, 'ptad_editor', $editor_settings );
 
 }
 
