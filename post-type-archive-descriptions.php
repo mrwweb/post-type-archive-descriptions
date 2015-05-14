@@ -319,7 +319,7 @@ function ptad_get_post_type_description( $post_type = '' ) {
  */
 function ptad_admin_bar_links( $admin_bar ) {
 
-	if( !is_admin() && is_post_type_archive() ) {
+	if( !is_admin() && is_post_type_archive( ptad_get_post_types() ) ) {
 		global $post_type;
 		$post_type_object = get_post_type_object( $post_type );
 		$post_type_name = $post_type_object->labels->name;
