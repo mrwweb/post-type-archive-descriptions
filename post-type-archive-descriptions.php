@@ -318,7 +318,7 @@ add_action('admin_bar_menu', 'ptad_admin_bar_links',  100);
  ****************************************************/
 add_filter( 'get_the_archive_description', 'ptad_archive_description' );
 function ptad_archive_description( $description ) {
-	if( is_post_type_archive( ptad_get_post_types() ) {
+	if( is_post_type_archive( ptad_get_post_types() ) ) {
 		$description = ptad_get_post_type_description();
 	}
 	return $description;
