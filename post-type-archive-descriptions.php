@@ -30,9 +30,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ****************************************************/
 load_plugin_textdomain(
-		'post-type-archive-descriptions',
-		false,
-		dirname( plugin_basename( __FILE__ ) ) . '/languages/'
+	'post-type-archive-descriptions',
+	false,
+	dirname( plugin_basename( __FILE__ ) ) . '/languages/'
 );
 
 /****************************************************
