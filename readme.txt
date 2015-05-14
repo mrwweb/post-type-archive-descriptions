@@ -3,14 +3,14 @@ Contributors: mrwweb
 Donate link: https://cash.me/$MRWweb
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Tags: cpt, custom post types, description, custom post type description
+Tags: cpt, custom post types, description, custom post type description, post type archive, archives, custom post type archive
 Requires at least: 3.1
 Tested up to: 3.5
 Stable tag: 1.0.0
 
 == Description ==
 
-Enables an editable description for a post type to display at the top of the post type archive page.
+Enables an editable description for a post type to display at the top of the post type archive page. Works just like a taxonomy term description.
 
 Automatically works for any theme that uses `the_archive_description()`, added in WordPress 4.1.
 
