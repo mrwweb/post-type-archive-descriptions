@@ -40,10 +40,12 @@ load_plugin_textdomain(
  * Get post types for plugin, filterable by users
  *
  ****************************************************/
-
+/**
+ * return array of post types that should use the Post Type Archive Description
+ * @return array post types to use description with (default, all non-built-in with archive)
+ */
 function ptad_get_post_types() {
 	$args = array(
-		'public'   => true,
 		'_builtin' => false,
 		'has_archive' => true
 	);
@@ -64,17 +66,35 @@ function ptad_settings_page_title( $post_type, $pt_val = 'label' ) {
 		$post_type_info = get_post_types( array( 'name' => $post_type ), 'objects' );
 		$post_type = $post_type_info[$post_type]->labels->name;
 	}
-	$settings_page_title = sprintf( __( 'Description of the %1$s Custom Post Type', 'post-type-archive-descriptions' ), $post_type );
+	$settings_page_title = sprintf( __( 'Description for the %1$s Archive', 'post-type-archive-descriptions' ), $post_type );
+	/**
+	 * filter for admin menu label
+	 * 
+	 * @var string $settings_page_menu_label label text (default: "Description for the {Post Type} Archive")
+	 * @var string $post_type post_type name if needed
+	 */
 	$settings_page_title = apply_filters( 'ptad_admin_title', $settings_page_title, $post_type );
 	return $settings_page_title;
 }
 
+/**
+ * Output filterable menu label for a post type's description settings page.
+ * @param  string $post_type post_type to create label for
+ * @param 'label'|'name' $pt_val whether $post_type is the label (default) or name
+ * @return string            admin menu label
+ */
 function ptad_settings_menu_label( $post_type, $pt_val = 'label' ) {
 	if( $pt_val == 'name' ) {
 		$post_type_info = get_post_types( array( 'name' => $post_type ), 'objects' );
 		$post_type = $post_type_info[$post_type]->labels->name;
 	}
 	$settings_page_menu_label = __( 'Description', 'post-type-archive-descriptions' );
+	/**
+	 * filter for admin menu label
+	 * 
+	 * @var string $settings_page_menu_label label text (default: "Description")
+	 * @var string $post_type post_type name if needed
+	 */
 	$settings_page_menu_label = apply_filters( 'ptad_menu_label', $settings_page_menu_label, $post_type );
 	return $settings_page_menu_label;
 }
@@ -85,11 +105,11 @@ function ptad_settings_menu_label( $post_type, $pt_val = 'label' ) {
  * 
  ****************************************************/
 
+add_action( 'admin_menu', 'ptad_enable_pages' );
 /**
  * Register admin pages for description field
  */
-add_action( 'admin_menu', 'post_type_desc_enable_pages' );
-function post_type_desc_enable_pages() {
+function ptad_enable_pages() {
 
 	$post_types = ptad_get_post_types();
 
@@ -115,8 +135,8 @@ function post_type_desc_enable_pages() {
 /**
  * Register Setting, Settings Section, and Settings Field
  */
-add_action( 'admin_init', 'post_type_desc_register_settings' );
-function post_type_desc_register_settings() {
+add_action( 'admin_init', 'ptad_register_settings' );
+function ptad_register_settings() {
 
 	$post_types = ptad_get_post_types();
 
@@ -165,7 +185,7 @@ function post_type_desc_register_settings() {
 function ptad_settings_section_callback() {}
 
 /**
- * Output a wp_editor instance for use by our settings fields
+ * Output a wp_editor instance for use by settings fields
  */
 function ptad_editor_field( $args ) {
 
@@ -184,12 +204,12 @@ function ptad_editor_field( $args ) {
 		'textarea_rows' => 15,
 		'media_buttons' => true
 	);
-	wp_editor( $description, 'ptad_editor', $editor_settings );
+	wp_editor( wp_kses_post( $description ), 'ptad_editor', $editor_settings );
 
 }
 
 /**
- * Output our Settings Pages
+ * Output settings pages
  */
 function ptad_settings_page() {
 	$screen = get_current_screen();
@@ -206,6 +226,9 @@ function ptad_settings_page() {
 	</div> <?php
 }
 
+/**
+ * sanitize description inputs before saving option
+ */
 function ptad_sanitize_inputs( $input ) {
 	// get all descriptions
 	$all_descriptions = (array) get_option( 'ptad_descriptions' );
@@ -225,7 +248,15 @@ function ptad_sanitize_inputs( $input ) {
  * See: http://core.trac.wordpress.org/ticket/14365
  */
 function ptad_allow_edit_posts() {
-	return 'edit_posts';
+	$capability = 'edit_posts';
+	/**
+	 * filter the capability for who can edit descriptions
+	 * 
+	 * @var string $capability capability required to edit post type descriptions (default: edit_posts)
+	 */
+	$capability = apply_filters( 'ptad_description_capability', $capability );
+	
+	return esc_attr( $capability );
 }
 add_filter( 'option_page_capability_ptad_descriptions', 'ptad_allow_edit_posts' );
 
@@ -235,10 +266,26 @@ add_filter( 'option_page_capability_ptad_descriptions', 'ptad_allow_edit_posts' 
  * Functions to get Description Page Content
  * 
  ****************************************************/
+/**
+ * echo post type archive description
+ * 
+ * if on a post type archive, automatically grabs current post type
+ * 
+ * @param  string $post_type slug for post type to show description for (optional)
+ * @return string            post type description
+ */
 function ptad_the_post_type_description( $post_type = '' ) {
 	echo ptad_get_post_type_description( $post_type );
 }
 
+/**
+ * return post type archive description
+ * 
+ * if on a post type archive, automatically grabs current post type
+ * 
+ * @param  string $post_type slug for post type to show description for (optional)
+ * @return string            post type description
+ */
 function ptad_get_post_type_description( $post_type = '' ) {
 	
 	// get global $post_type if not specified
@@ -248,16 +295,15 @@ function ptad_get_post_type_description( $post_type = '' ) {
 
 	$all_descriptions = (array) get_option( 'ptad_descriptions' );
 	if( array_key_exists($post_type, $all_descriptions) ) {
-		$post_type_x = $all_descriptions[$post_type];
+		$post_type_description = $all_descriptions[$post_type];
 	} else {
-		$post_type_x = '';
+		$post_type_description = '';
 	}
-	$description = apply_filters( 'the_content', $post_type_x );
+	$description = apply_filters( 'the_content', $post_type_description );
 
-	return $description;
+	return wp_kses_post( $description );
 
 }
-
 
 /****************************************************
  * 
@@ -267,6 +313,9 @@ function ptad_get_post_type_description( $post_type = '' ) {
  * 
  ****************************************************/
 
+/**
+ * add links to view/edit archive in the admin bar
+ */
 function ptad_admin_bar_links( $admin_bar ) {
 
 	if( !is_admin() && is_post_type_archive() ) {
@@ -275,6 +324,11 @@ function ptad_admin_bar_links( $admin_bar ) {
 		$post_type_name = $post_type_object->labels->name;
 
 		$link_text = sprintf( __( 'Edit %1$s Description', 'post-type-archive-descriptions' ), $post_type_name );
+		/**
+		 * filter the "Edit {Post Type} Description" link
+		 * @var $link_text string default test
+		 * @var $post_type_name string name of post type for targeting specific type
+		 */
 		$link_text = apply_filters( 'ptad_edit_description_link', $link_text, $post_type_name );
 
 		$args = array(
@@ -296,6 +350,11 @@ function ptad_admin_bar_links( $admin_bar ) {
 			$post_type_name = $post_type_object->labels->name;
 
 			$link_text = sprintf( __( 'View %1$s Archive', 'post-type-archive-descriptions' ), $post_type_name );
+			/**
+			 * filter the "View {Post Type} Archive" link
+			 * @var $link_text string default test
+			 * @var $post_type_name string name of post type for targeting specific type
+			 */
 			$link_text = apply_filters( 'ptad_view_archive_link', $link_text, $post_type_name );
 
 			$post_type_object = get_post_type_object( $post_type );
@@ -317,9 +376,14 @@ add_action('admin_bar_menu', 'ptad_admin_bar_links',  100);
  * 
  ****************************************************/
 add_filter( 'get_the_archive_description', 'ptad_archive_description' );
+/**
+ * filter the_archive_description & get_the_archive_description to show post type archive
+ * @param  string $description original description
+ * @return string              post type description if on post type archive
+ */
 function ptad_archive_description( $description ) {
 	if( is_post_type_archive( ptad_get_post_types() ) {
 		$description = ptad_get_post_type_description();
 	}
-	return $description;
+	return wp_kses_post( $description );
 }
