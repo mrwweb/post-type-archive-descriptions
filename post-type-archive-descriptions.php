@@ -74,7 +74,7 @@ function ptad_settings_menu_label( $post_type, $pt_val = 'label' ) {
 		$post_type_info = get_post_types( array( 'name' => $post_type ), 'objects' );
 		$post_type = $post_type_info[$post_type]->labels->name;
 	}
-	$settings_page_menu_label = __( 'Description', 'post-type-archive-descriptions' );
+	$settings_page_menu_label = __( 'Archive Description', 'post-type-archive-descriptions' );
 	$settings_page_menu_label = apply_filters( 'ptad_menu_label', $settings_page_menu_label, $post_type );
 	return $settings_page_menu_label;
 }
