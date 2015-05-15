@@ -12,14 +12,23 @@ Stable tag: 1.0.0
 
 Enables an editable description for a post type to display at the top of the post type archive page. Works just like a taxonomy term description.
 
-Automatically works for any theme that uses `the_archive_description()`, added in WordPress 4.1.
+Automatically works for any theme that uses `the_archive_description()` (added in WordPress 4.1) like [Twenty Fifteen](https://wordpress.org/themes/twentyfifteen/) or recent [_s-based themes](https://underscores.me).
 
 Also comes with a specific template tag—`ptad_the_post_type_description()` and `ptad_get_post_type_description()`—for other themes.
 
+= Other Plugins by MRWweb =
+
+* [Feature a Page Widget](http://wordpress.org/plugins/feature-a-page-widget/) - Feature a single page in any sidebar.
+* [MRW Web Design Simple TinyMCE](https://wordpress.org/plugins/mrw-web-design-simple-tinymce/) - Get rid of bad and obscure TinyMCE buttons. Move the rest to a single top row.
+* [Post Status Menu Items](http://wordpress.org/plugins/post-status-menu-items/) - Adds post status links–e.g. "Draft" (7)–to post type admin menus.
+* [Advanced Custom Fields Repeater & Flexible Content Fields Collapser](http://wordpress.org/plugins/advanced-custom-field-repeater-collapser/) - Easier sorting for large repeated fields in the Advanced Custom Fields plugin.
+
 == Installation ==
 
-1. Upload the `post-type-archive-descriptions` folder to the `/wp-content/plugins/` directory
-1. Activate the Post Type Archive Descriptions plugin through the 'Plugins' menu in WordPress
+1. From your WordPress site's dashboard, go to Plugins > Add New.
+1. Search for "Post Type Archive Descriptions."
+1. Click "Install."
+1. Click "Activate."
 
 == Frequently Asked Questions ==
 
@@ -30,6 +39,10 @@ In WordPress 4.1, [`the_archive_description()`](https://developer.wordpress.org/
 Older themes can use `ptad_get_post_type_description()` or `ptad_the_post_type_description()` to return or echo a post type description. Both functions take an optional `$post_type` slug argument to return a specific post type. However, that is unnecesarry on a page that returns `true` for is_post_type_archive()`.
 
 Chances are you want this in the `archive-post_type_slug.php` or `archive.php` template files.
+
+= Which post types get a description? =
+
+By default, any custom post type (not Posts or Pages) that was registered with `'has_archive' => true`. There is a filter (see below) to add support for *any* post type.
 
 = Are there filters to modify the plugin? =
 
