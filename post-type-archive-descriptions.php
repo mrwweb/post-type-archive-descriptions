@@ -3,6 +3,8 @@
 Plugin Name: Post Type Archive Descriptions
 Description: Enables an editable description for a post type to display at the top of the post type archive page.
 Author: Mark Root-Wiley
+Author URI: http://mrwweb.com
+Version: 1.0.0
 License: GPL v3
 Text Domain: post-type-archive-descriptions
 Domain Path: /languages/
