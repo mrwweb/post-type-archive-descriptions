@@ -206,6 +206,7 @@ function ptad_editor_field( $args ) {
 		'textarea_rows' => 15,
 		'media_buttons' => true
 	);
+	$editor_settings = apply_filters( 'ptad_wp_editor_settings', $editor_settings, $args, $description );
 
 	wp_editor( $description, 'ptadeditor', $editor_settings );
 
