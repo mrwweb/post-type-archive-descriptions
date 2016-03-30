@@ -207,12 +207,16 @@ function ptad_editor_field( $args ) {
 		'textarea_name' => $args['field_name'],
 		'textarea_rows' => 15,
 		'media_buttons' => true,
-		'class' 		=> 'wp-editor-area wp-editor multilanguage-input qtranxs-translatable'
+		'class' 		=> 'wp-editor-area wp-editor'
 	);
+
+	$editor_settings = apply_filters( 'ptad_wp_editor_settings', $editor_settings, $args, $description );
 
 	wp_editor( $description, 'ptadeditor', $editor_settings );
 	
-	add_filter('the_editor', 'qtranslate_admin_loadConfig');
+	if ( ! defined( 'QTX_VERSION' ) ) {
+		add_filter( 'the_editor', 'qtranslate_admin_loadConfig' );
+	}
 	
 }
 
@@ -396,41 +400,54 @@ function ptad_get_post_type_description( $post_type = '' ) {
 }
 
 if ( ! defined( 'QTX_VERSION' ) ) {
+
+	add_filter( 'ptad_wp_editor_settings', 'ptad_qtranslate_editor_args' );
+	/**
+	 * filter editor settings to add necessary text editor classes for support
+	 * @param  array $editor_settings tinymce settings array
+	 * @return array                  filtered settings
+	 */
+	function ptad_qtranslate_editor_args( $editor_settings ) {
+		 $editor_settings['classes'] = $editor_settings['classes'] . ' multilanguage-input qtranxs-translatable';
+
+		 return $editor_settings;
+	}
 	
-	function ptad_qtranslate_support($page_configs) {
-		{
-			//edit.php?post_type=$post_type&page=
-			$page_config = array();
-			
-			//get post types
-			$post_types = ptad_get_post_types();
+	add_filter('qtranslate_load_admin_page_config', 'ptad_qtranslate_support', 99); // 99 priority is important, loaded after registered post types
+	/**
+	 * filter qtranslate so it knows to pay attention on archive description editor pages
+	 */
+	function ptad_qtranslate_support( $page_configs ) {
 
-			// add a settings section and field for each $post_type
-			foreach ( $post_types as $post_type ) {
+		//edit.php?post_type=$post_type&page=
+		$page_config = array();
+		
+		//get post types
+		$post_types = ptad_get_post_types();
 
-				if( post_type_exists( $post_type ) ) {
-					$page_config['pages'] = array( 'edit.php' => 'post_type=' . $post_type . '&page=' );
-				}
-				
+		// add a settings section and field for each $post_type
+		foreach ( $post_types as $post_type ) {
+
+			if( post_type_exists( $post_type ) ) {
+				$page_config['pages'] = array( 'edit.php' => 'post_type=' . $post_type . '&page=' );
 			}
-
-			$page_config['forms'] = array();
-
-			$f = array();
-
-			$f['fields'] = array();
-			$fields = &$f['fields'];
-
-			//textarea support
-			$fields[] = array( 'tag' => 'textarea' );
-
-			$page_config['forms'][] = $f;
-			$page_configs[] = $page_config;
+			
 		}
+
+		$page_config['forms'] = array();
+
+		$f = array();
+
+		$f['fields'] = array();
+		$fields = &$f['fields'];
+
+		//textarea support
+		$fields[] = array( 'tag' => 'textarea' );
+
+		$page_config['forms'][] = $f;
+		$page_configs[] = $page_config;
 
 		return $page_configs;
 	}
-
-	add_filter('qtranslate_load_admin_page_config', 'ptad_qtranslate_support', 99); // 99 priority is important, loaded after registered post types
 
 }
