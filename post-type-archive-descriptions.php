@@ -3,6 +3,8 @@
 Plugin Name: Post Type Archive Descriptions
 Description: Enables an editable description for a post type to display at the top of the post type archive page.
 Author: Mark Root-Wiley
+Author URI: http://mrwweb.com
+Version: 1.1.1
 License: GPL v3
 Text Domain: post-type-archive-descriptions
 Domain Path: /languages/
@@ -109,6 +111,7 @@ add_action( 'admin_menu', 'ptad_enable_pages' );
 /**
  * Register admin pages for description field
  */
+
 function ptad_enable_pages() {
 
 	$post_types = ptad_get_post_types();
@@ -135,6 +138,7 @@ function ptad_enable_pages() {
 /**
  * Register Setting, Settings Section, and Settings Field
  */
+
 add_action( 'admin_init', 'ptad_register_settings' );
 function ptad_register_settings() {
 
@@ -202,11 +206,18 @@ function ptad_editor_field( $args ) {
 	$editor_settings = array(
 		'textarea_name' => $args['field_name'],
 		'textarea_rows' => 15,
-		'media_buttons' => true
+		'media_buttons' => true,
+		'classes' 		=> 'wp-editor-area wp-editor'
 	);
 
-	wp_editor( $description, 'ptadeditor', $editor_settings );
+	$editor_settings = apply_filters( 'ptad_wp_editor_settings', $editor_settings, $args, $description );
 
+	wp_editor( $description, 'ptadeditor', $editor_settings );
+	
+	if ( ! defined( 'QTX_VERSION' ) ) {
+		add_filter( 'the_editor', 'qtranslate_admin_loadConfig' );
+	}
+	
 }
 
 /**
@@ -244,7 +255,7 @@ function ptad_sanitize_inputs( $input ) {
 }
 
 /**
- * Allow editors to save Post Type Descriptions
+ * Return capability that's allowed to edit posts
  * 
  * See: http://core.trac.wordpress.org/ticket/14365
  */
@@ -259,6 +270,7 @@ function ptad_allow_edit_posts() {
 	
 	return esc_attr( $capability );
 }
+/* Set options page permissions to honor specific permissions for editing the description */
 add_filter( 'option_page_capability_ptad_descriptions', 'ptad_allow_edit_posts' );
 
 /****************************************************
@@ -274,7 +286,11 @@ add_filter( 'option_page_capability_ptad_descriptions', 'ptad_allow_edit_posts' 
  */
 function ptad_admin_bar_links( $admin_bar ) {
 
-	if( !is_admin() && is_post_type_archive( ptad_get_post_types() ) ) {
+	if(
+		!is_admin()
+		&& is_post_type_archive( ptad_get_post_types() )
+		&& current_user_can( ptad_allow_edit_posts() )
+	 ) {
 		global $post_type;
 		$post_type_object = get_post_type_object( $post_type );
 		$post_type_name = $post_type_object->labels->name;
@@ -385,5 +401,58 @@ function ptad_get_post_type_description( $post_type = '' ) {
 	$description = apply_filters( 'the_content', $post_type_description );
 
 	return wp_kses_post( $description );
+
+}
+
+if ( ! defined( 'QTX_VERSION' ) ) {
+
+	add_filter( 'ptad_wp_editor_settings', 'ptad_qtranslate_editor_args' );
+	/**
+	 * filter editor settings to add necessary text editor classes for support
+	 * @param  array $editor_settings tinymce settings array
+	 * @return array                  filtered settings
+	 */
+	function ptad_qtranslate_editor_args( $editor_settings ) {
+		 $editor_settings['classes'] = $editor_settings['classes'] . ' multilanguage-input qtranxs-translatable';
+
+		 return $editor_settings;
+	}
+	
+	add_filter('qtranslate_load_admin_page_config', 'ptad_qtranslate_support', 99); // 99 priority is important, loaded after registered post types
+	/**
+	 * filter qtranslate so it knows to pay attention on archive description editor pages
+	 */
+	function ptad_qtranslate_support( $page_configs ) {
+
+		//edit.php?post_type=$post_type&page=
+		$page_config = array();
+		
+		//get post types
+		$post_types = ptad_get_post_types();
+
+		// add a settings section and field for each $post_type
+		foreach ( $post_types as $post_type ) {
+
+			if( post_type_exists( $post_type ) ) {
+				$page_config['pages'] = array( 'edit.php' => 'post_type=' . $post_type . '&page=' );
+			}
+			
+		}
+
+		$page_config['forms'] = array();
+
+		$f = array();
+
+		$f['fields'] = array();
+		$fields = &$f['fields'];
+
+		//textarea support
+		$fields[] = array( 'tag' => 'textarea' );
+
+		$page_config['forms'][] = $f;
+		$page_configs[] = $page_config;
+
+		return $page_configs;
+	}
 
 }
