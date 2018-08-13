@@ -4,9 +4,9 @@ Donate link: https://cash.me/$MRWweb
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
-Requires at least: 3.1
-Tested up to: 4.5
-Stable tag: 1.1.1
+Requires at least: 4.6
+Tested up to: 4.9
+Stable tag: 1.1.4
 
 == Description ==
 
@@ -37,7 +37,7 @@ In WordPress 4.1, [`the_archive_description()`](https://developer.wordpress.org/
 
 Older themes can use `ptad_get_post_type_description()` or `ptad_the_post_type_description()` to return or echo a post type description. Both functions take an optional `$post_type` slug argument to return a specific post type. However, that is unnecesarry on a page that returns `true` for is_post_type_archive()`.
 
-Chances are you want this in the `archive-post_type_slug.php` or `archive.php` template files.
+Chances are you want this in the `archive-{post_type_slug}.php` or `archive.php` template files.
 
 = Which post types get a description? =
 
@@ -61,6 +61,14 @@ Glad you asked. Yes. Plenty!
 2. The post type archive description displayed (automatically!) in the Twenty Fifteen theme. The plugin also adds the "Edit Books Description" link.
 
 == Changelog ==
+= 1.1.4 (August 13, 2018)
+* [Fix] Fully restrict access to Post Type Description edit screen when `ptad_description_capability` filter is used. [Props](https://wordpress.org/support/topic/ptad_description_capability-filter-should-control-display-of-submenu-pages/) @deucecreative
+* Bump requires version to 4.6 and remove `load_plugin_textdomain` usage
+
+= 1.1.3 (May 31, 2018) =
+* [Fix] Remove deprecated screen icon notice on Archive Description edit screen
+* Bump tested up to version
+
 = 1.1.2 (April 25, 2017) =
 * [Fix] Only show "Edit Description" admin bar link if user has correct permissions
 * [Docs] Clarify one function's inline documentation

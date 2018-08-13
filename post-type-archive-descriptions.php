@@ -3,11 +3,10 @@
 Plugin Name: Post Type Archive Descriptions
 Description: Enables an editable description for a post type to display at the top of the post type archive page.
 Author: Mark Root-Wiley
-Author URI: http://mrwweb.com
-Version: 1.1.1
+Author URI: https://MRWweb.com
+Version: 1.1.4
 License: GPL v3
 Text Domain: post-type-archive-descriptions
-Domain Path: /languages/
 
 Post Type Archive Descriptions
 Copyright (C) 2015, Mark Root-Wiley - info@MRWweb.com
@@ -25,17 +24,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-/****************************************************
- *
- * Load the text domain
- *
- ****************************************************/
-load_plugin_textdomain(
-	'post-type-archive-descriptions',
-	false,
-	dirname( plugin_basename( __FILE__ ) ) . '/languages/'
-);
 
 /****************************************************
  *
@@ -124,7 +112,7 @@ function ptad_enable_pages() {
 				'edit.php?post_type=' . $post_type, // $parent_slug
 				ptad_settings_page_title( $post_type, 'name' ), // $page_title
 				ptad_settings_menu_label( $post_type, 'name' ), // $menu_label
-				'edit_posts', // $capability
+				ptad_allow_edit_posts(), // $capability
 				$post_type . '-description', // $menu_slug
 				'ptad_settings_page' // $function
 			);
@@ -228,7 +216,6 @@ function ptad_settings_page() {
 	$post_type = $screen->post_type;
 	?>
 	<div class="wrap">
-		<?php screen_icon(); ?>
 		<h2><?php echo ptad_settings_page_title( $post_type, 'name' ); ?></h2>
 		<form action="options.php" method="POST">
 				<?php settings_fields( 'ptad_descriptions' ); ?>
