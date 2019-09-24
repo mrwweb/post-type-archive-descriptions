@@ -49,9 +49,11 @@ Chances are you want this in the `archive-{post_type_slug}.php` or `archive.php`
 
 By default, any custom post type excluding Posts and Pages that was registered with `'has_archive' => true`. There is a filter (see below) to add support for *any* post type.
 
-= Are there filters to modify the plugin? =
+= Are there filters & actions to modify the plugin? =
 
 Glad you asked. Yes. Plenty!
+
+Filters:
 
 - `ptad_post_types` - specify the post types with a description (default is all non-built_in post types where `has_archive` is true)
 - `ptad_admin_title` - Modify admin page title
@@ -59,6 +61,13 @@ Glad you asked. Yes. Plenty!
 - `ptad_description_capability` - Set capability of who can edit descriptions. Default: `edit_posts`
 - `ptad_edit_description_link` - Modify admin bar link to edit the description
 - `ptad_view_archive_link` - Modify admin bar link to view the post type archive
+
+Actions:
+
+- `ptad_before_editor` - Between title and description editor for ALL admin pages. Receives `$post_type` arg.
+- `ptad_before_editor_{post_type}` - Between title and description editor for any specific post type.
+- `ptad_after_editor` - Immediately below description editor for ALL admin pages. Receives `$post_type` arg.
+- `ptad_after_editor_{post_type}` -  Immediately below description editor for any specific post type.
 
 == Screenshots ==
 
