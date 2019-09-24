@@ -174,7 +174,25 @@ function ptad_register_settings() {
 }
 
 // There is no need for this function at this time.
-function ptad_settings_section_callback() {}
+function ptad_settings_section_callback( $args ) {
+
+	$post_type = str_replace( 'ptad_settings_section_', '', $args['id'] );
+	
+	/**
+	 * Action before Description editor field in the admin
+	 *
+	 * $post_type 	slug of post type the description is for
+	 */
+	do_action( 'ptad_before_editor', $post_type );
+	
+	/**
+	 * Action before Description editor field in the admin only for a specific post type
+	 *
+	 * example add_action( 'ptad_before_editor_my_custom_post_type', 'mycpt_action' );
+	 */
+	do_action( 'ptad_before_editor_' . $post_type );
+
+}
 
 /**
  * Output a wp_editor instance for use by settings fields
@@ -201,6 +219,20 @@ function ptad_editor_field( $args ) {
 	$editor_settings = apply_filters( 'ptad_wp_editor_settings', $editor_settings, $args, $description );
 
 	wp_editor( $description, 'ptadeditor', $editor_settings );
+
+	/**
+	 * Action before Description editor field in the admin
+	 *
+	 * $post_type 	slug of post type the description is for
+	 */
+	do_action( 'ptad_after_editor', $post_type );
+	
+	/**
+	 * Action before Description editor field in the admin only for a specific post type
+	 *
+	 * example add_action( 'ptad_after_editor_my_custom_post_type', 'mycpt_action' );
+	 */
+	do_action( 'ptad_after_editor_' . $post_type );
 	
 	if ( ! defined( 'QTX_VERSION' ) ) {
 		add_filter( 'the_editor', 'qtranslate_admin_loadConfig' );
