@@ -67,7 +67,7 @@ Glad you asked. Yes. Plenty!
 2. The post type archive description displayed (automatically!) in the Twenty Fifteen theme. The plugin also adds the "Edit Books Description" link.
 
 == Changelog ==
-= 1.1.4 (August 13, 2018)
+= 1.1.4 (August 13, 2018) =
 * [Fix] Fully restrict access to Post Type Description edit screen when `ptad_description_capability` filter is used. [Props](https://wordpress.org/support/topic/ptad_description_capability-filter-should-control-display-of-submenu-pages/) @deucecreative
 * Bump requires version to 4.6 and remove `load_plugin_textdomain` usage
 
