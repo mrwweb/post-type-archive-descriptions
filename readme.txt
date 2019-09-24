@@ -1,11 +1,11 @@
 === Post Type Archive Descriptions ===
 Contributors: mrwweb
-Donate link: https://cash.me/$MRWweb
+Donate link: https://www.paypal.me/rootwiley
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
 Requires at least: 4.6
-Tested up to: 4.9
+Tested up to: 5.0
 Stable tag: 1.1.4
 
 == Description ==
@@ -21,6 +21,7 @@ Also comes with a specific template tag—`ptad_the_post_type_description()` and
 * [Feature a Page Widget](http://wordpress.org/plugins/feature-a-page-widget/) - Feature a single page in any sidebar.
 * [MRW Web Design Simple TinyMCE](https://wordpress.org/plugins/mrw-web-design-simple-tinymce/) - Get rid of bad and obscure TinyMCE buttons. Move the rest to a single top row.
 * [Post Status Menu Items](http://wordpress.org/plugins/post-status-menu-items/) - Adds post status links–e.g. "Draft" (7)–to post type admin menus.
+* [Hawaiian Characters](http://wordpress.org/plugins/hawaiian-characters/) - Adds the correct characters with diacriticals to the WordPress editor Character Map for Hawaiian
 
 == Installation ==
 
@@ -30,6 +31,11 @@ Also comes with a specific template tag—`ptad_the_post_type_description()` and
 1. Click "Activate."
 
 == Frequently Asked Questions ==
+
+= Is this plugin compatible with WordPress 5.0 / "Gutenberg"? =
+Yes. The plugin does not directly integrate with the post editor screen so no changes were required.
+
+Be aware that as of 5 Dec 2019, it [appears the Twenty Nineteen theme will *not* support post type archive descriptions by default](https://github.com/WordPress/twentynineteen/issues/256). Unless something changes, you will need to manually add support for them in a child theme if using Twenty Nineteen. See the next FAQ for how to do that.
 
 = How do I display a custom post type's description? =
 
@@ -41,7 +47,7 @@ Chances are you want this in the `archive-{post_type_slug}.php` or `archive.php`
 
 = Which post types get a description? =
 
-By default, any custom post type (not Posts or Pages) that was registered with `'has_archive' => true`. There is a filter (see below) to add support for *any* post type.
+By default, any custom post type excluding Posts and Pages that was registered with `'has_archive' => true`. There is a filter (see below) to add support for *any* post type.
 
 = Are there filters to modify the plugin? =
 
