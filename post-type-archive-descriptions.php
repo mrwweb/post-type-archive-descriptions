@@ -250,9 +250,9 @@ function ptad_settings_page() {
 	<div class="wrap">
 		<h2><?php echo ptad_settings_page_title( $post_type, 'name' ); ?></h2>
 		<form action="options.php" method="POST">
-				<?php settings_fields( 'ptad_descriptions' ); ?>
-				<?php do_settings_sections( $post_type . '-description' ); ?>
-				<?php submit_button(); ?>
+			<?php settings_fields( 'ptad_descriptions' ); ?>
+			<?php do_settings_sections( $post_type . '-description' ); ?>
+			<?php submit_button(); ?>
 		</form>
 	</div> <?php
 }
