@@ -344,7 +344,7 @@ function ptad_archive_description( $description ) {
 	if( is_post_type_archive( ptad_get_post_types() ) ) {
 		$description = ptad_get_post_type_description();
 	}
-	return wp_kses_post( $description );
+	return $description;
 }
 
 /****************************************************
@@ -387,7 +387,7 @@ function ptad_get_post_type_description( $post_type = '' ) {
 	}
 	$description = apply_filters( 'the_content', $post_type_description );
 
-	return wp_kses_post( $description );
+	return $description;
 
 }
 
