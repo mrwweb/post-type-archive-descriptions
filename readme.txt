@@ -6,15 +6,13 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
 Requires at least: 4.6
 Tested up to: 5.0
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 
 == Description ==
 
-Enables an editable description for a post type to display at the top of the post type archive page. Works just like a taxonomy term description.
+Enables an editable description for a post type to display at the top of the post type archive page. Output the description via the native `the_archive_description()` function that already works with a taxonomy term descriptions.
 
-Automatically works for any theme that uses `the_archive_description()` (added in WordPress 4.1) like [Twenty Fifteen](https://wordpress.org/themes/twentyfifteen/), [Twenty Sixteen](https://wordpress.org/themes/twentysixteen/), [Twenty Seventeen](https://wordpress.org/themes/twentyseventeen/) or recent [_s-based themes](https://underscores.me).
-
-Also comes with a specific template tag—`ptad_the_post_type_description()` and `ptad_get_post_type_description()`—for other themes.
+Automatically works for any theme that uses `the_archive_description()` (added in WordPress 4.1) like [Twenty Fifteen](https://wordpress.org/themes/twentyfifteen/), [Twenty Sixteen](https://wordpress.org/themes/twentysixteen/), [Twenty Seventeen](https://wordpress.org/themes/twentyseventeen/) or most  [_s-based themes](https://underscores.me).
 
 = Other Plugins by MRWweb =
 
@@ -29,6 +27,7 @@ Also comes with a specific template tag—`ptad_the_post_type_description()` and
 1. Search for "Post Type Archive Descriptions."
 1. Click "Install."
 1. Click "Activate."
+1. Depending on your theme, you may need to add `the_archive_description()` to your templates in order for it to work.
 
 == Frequently Asked Questions ==
 
@@ -76,6 +75,10 @@ Actions:
 2. The post type archive description displayed (automatically!) in the Twenty Fifteen theme. The plugin also adds the "Edit Books Description" link.
 
 == Changelog ==
+= 1.1.5 (September 23, 2019) =
+* Add global and post-type-specific actions before and after the Description Editor on the admin editing screen: `ptad_before_editor`, `ptad_before_editor_{post_type}`, `ptad_after_editor`, and `ptad_after_editor_{post_type}`
+* Don't sanitize plugin output so shortcodes work. Thanks @mmcginnis.
+
 = 1.1.4 (August 13, 2018) =
 * [Fix] Fully restrict access to Post Type Description edit screen when `ptad_description_capability` filter is used. [Props](https://wordpress.org/support/topic/ptad_description_capability-filter-should-control-display-of-submenu-pages/) @deucecreative
 * Bump requires version to 4.6 and remove `load_plugin_textdomain` usage
@@ -99,7 +102,10 @@ Actions:
 * Initial release.
 * Forked from [CPT Descriptions](https://wordpress.org/plugins/cpt-descriptions/)
 
-== Upgrade Notice == 
+== Upgrade Notice ==
+= 1.1.5 =
+New actions for developers!
+
 = 1.1.1 =
 Resolve error. Fix qTranslate-X support.
 
