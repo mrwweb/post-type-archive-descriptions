@@ -45,6 +45,31 @@ function ptad_get_post_types() {
 }
 
 /**
+ * Output filterable parent of Settings page
+ *
+ * @param string $post_type name of post type for the page
+ * @return bool|string parent for settings page
+ */
+function ptad_settings_page_parent( $post_type, $show_in_menu = false ) {
+ 
+	$settings_page_parent = $show_in_menu;
+	
+	// Default is standard post type editing screen
+	if( $settings_page_parent && is_bool( $settings_page_parent ) ) {
+		$settings_page_parent = "edit.php?post_type=$post_type";
+	}
+	
+	/**
+	 * filter for admin menu label
+	 *
+	 * @var string $settings_page_parent label text (default: "edit.php?post_type=$post_type")
+	 * @var string $post_type post_type name if needed
+	 */
+	$settings_page_parent = apply_filters( 'ptad_admin_parent', $settings_page_parent, $post_type );
+	return $settings_page_parent;
+}
+
+/**
  * Output filterable name of Settings page
  * 
  * @param string $post_type name of post type for the page
@@ -108,8 +133,12 @@ function ptad_enable_pages() {
 
 		if( post_type_exists( $post_type ) ) {
 
+				// Check if post type has a particular parent menu location
+				$post_type_object = get_post_type_object( $post_type );
+				$show_in_menu     = $post_type_object->show_in_menu;
+		    
 			add_submenu_page(
-				'edit.php?post_type=' . $post_type, // $parent_slug
+				ptad_settings_page_parent( $post_type, $show_in_menu ), // $parent slug
 				ptad_settings_page_title( $post_type, 'name' ), // $page_title
 				ptad_settings_menu_label( $post_type, 'name' ), // $menu_label
 				ptad_allow_edit_posts(), // $capability
