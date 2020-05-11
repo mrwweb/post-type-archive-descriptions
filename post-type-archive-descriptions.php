@@ -60,9 +60,9 @@ function ptad_settings_page_parent( $post_type, $show_in_menu = false ) {
 	}
 	
 	/**
-	 * filter for admin menu label
+	 * filter for parent of Archive Settings page
 	 *
-	 * @var string $settings_page_parent label text (default: "edit.php?post_type=$post_type")
+	 * @var string $settings_page_parent address (default: "edit.php?post_type=$post_type")
 	 * @var string $post_type post_type name if needed
 	 */
 	$settings_page_parent = apply_filters( 'ptad_admin_parent', $settings_page_parent, $post_type );
