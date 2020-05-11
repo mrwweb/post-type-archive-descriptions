@@ -370,10 +370,12 @@ function ptad_admin_bar_links( $admin_bar ) {
 		 */
 		$link_text = apply_filters( 'ptad_edit_description_link', $link_text, $post_type_name );
 
+		$parent_page = ptad_settings_page_parent( $post_type, $post_type_object->show_in_menu );
+		
 		$args = array(
 			'id'    => 'wp-admin-bar-edit',
 			'title' => $link_text,
-			'href'  => admin_url( 'edit.php?post_type=' . $post_type . '&page=' . $post_type . '-description' )
+			'href'  => admin_url( $parent_page . '&page=' . $post_type . '-description' )
 		);
 		$admin_bar->add_menu( $args );
 	}
