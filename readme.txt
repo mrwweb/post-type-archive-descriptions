@@ -5,7 +5,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
 Requires at least: 4.6
-Tested up to: 5.0
+Tested up to: 5.5
 Stable tag: 1.2.0
 
 == Description ==
