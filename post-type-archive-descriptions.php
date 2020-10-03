@@ -149,7 +149,6 @@ function ptad_enable_pages() {
 			// Check if post type has a particular parent menu location
 			$post_type_object = get_post_type_object( $post_type );
 			$show_in_menu     = $post_type_object->show_in_menu;
-			$callback         = ( $show_in_menu && is_bool( $show_in_menu ) ) ? 'standard' : 'custom';
 		    
 			add_submenu_page(
 				ptad_settings_page_parent( $post_type, $show_in_menu ), // $parent slug
@@ -157,7 +156,7 @@ function ptad_enable_pages() {
 				ptad_settings_menu_label( $post_type, 'name' ), // $menu_label
 				ptad_allow_edit_posts(), // $capability
 				$post_type . '-description', // $menu_slug
-				'ptad_settings_' . $callback // $function
+				'ptad_settings_page' // $function
 			);
 
 		endif;
@@ -283,30 +282,19 @@ function ptad_editor_field( $args ) {
 }
 
 /**
- * Output settings pages for standard CPT setup
- */
-function ptad_settings_standard() {
-	$screen = get_current_screen();
-	$post_type = $screen->post_type;
-	
-	ptad_settings_page( $post_type );
-}
-
-/**
- * Output settings pages for custom CPT setup
- */
-function ptad_settings_custom() {
-	$page = $_GET['page'];
-	$post_type = str_replace( '-description', '', $page );
-	
-	ptad_settings_page( $post_type );
-}
-
-/**
  * Output settings pages
  */
 function ptad_settings_page( $post_type ) {
+
+	// occurs when parent menu item is not the post type
+	if( empty( $post_type ) ) {
+
+		$page = $_GET['page'];
+		$post_type = str_replace( '-description', '', $page );
+
+	}
 	?>
+
 	<div class="wrap">
 		<h2><?php echo ptad_settings_page_title( $post_type, 'name' ); ?></h2>
 		<form action="options.php" method="POST">
@@ -314,7 +302,9 @@ function ptad_settings_page( $post_type ) {
 			<?php do_settings_sections( $post_type . '-description' ); ?>
 			<?php submit_button(); ?>
 		</form>
-	</div> <?php
+	</div>
+
+	<?php
 }
 
 /**
