@@ -35,6 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * @return array post types to use description with (default, all non-built-in with archive)
  */
 function ptad_get_post_types() {
+
 	$args = array(
 		'_builtin' => false,
 		'has_archive' => true
@@ -42,6 +43,7 @@ function ptad_get_post_types() {
 	$post_types = apply_filters( 'ptad_post_types', get_post_types( $args ) );
 
 	return $post_types;
+
 }
 
 /**
@@ -66,7 +68,9 @@ function ptad_settings_page_parent( $post_type, $show_in_menu = false ) {
 	 * @var string $post_type post_type name if needed
 	 */
 	$settings_page_parent = apply_filters( 'ptad_admin_parent', $settings_page_parent, $post_type );
+
 	return $settings_page_parent;
+
 }
 
 /**
@@ -77,11 +81,13 @@ function ptad_settings_page_parent( $post_type, $show_in_menu = false ) {
  * @return name for settings page
  */
 function ptad_settings_page_title( $post_type, $pt_val = 'label' ) {
+
 	if( $pt_val == 'name' ) {
 		$post_type_info = get_post_types( array( 'name' => $post_type ), 'objects' );
 		$post_type = $post_type_info[$post_type]->labels->name;
 	}
 	$settings_page_title = sprintf( __( 'Description for the %1$s Archive', 'post-type-archive-descriptions' ), $post_type );
+
 	/**
 	 * filter for admin menu label
 	 * 
@@ -89,7 +95,9 @@ function ptad_settings_page_title( $post_type, $pt_val = 'label' ) {
 	 * @var string $post_type post_type name if needed
 	 */
 	$settings_page_title = apply_filters( 'ptad_admin_title', $settings_page_title, $post_type );
+
 	return $settings_page_title;
+
 }
 
 /**
@@ -99,11 +107,14 @@ function ptad_settings_page_title( $post_type, $pt_val = 'label' ) {
  * @return string            admin menu label
  */
 function ptad_settings_menu_label( $post_type, $pt_val = 'label' ) {
+
 	if( $pt_val == 'name' ) {
 		$post_type_info = get_post_types( array( 'name' => $post_type ), 'objects' );
 		$post_type = $post_type_info[$post_type]->labels->name;
 	}
+
 	$settings_page_menu_label = __( 'Archive Description', 'post-type-archive-descriptions' );
+
 	/**
 	 * filter for admin menu label
 	 * 
@@ -111,7 +122,9 @@ function ptad_settings_menu_label( $post_type, $pt_val = 'label' ) {
 	 * @var string $post_type post_type name if needed
 	 */
 	$settings_page_menu_label = apply_filters( 'ptad_menu_label', $settings_page_menu_label, $post_type );
+
 	return $settings_page_menu_label;
+
 }
 
 /****************************************************
@@ -129,14 +142,14 @@ function ptad_enable_pages() {
 
 	$post_types = ptad_get_post_types();
 
-	foreach ( $post_types as $post_type ) {
+	foreach ( $post_types as $post_type ) :
 
-		if( post_type_exists( $post_type ) ) {
+		if( post_type_exists( $post_type ) ) :
 
-				// Check if post type has a particular parent menu location
-				$post_type_object = get_post_type_object( $post_type );
-				$show_in_menu     = $post_type_object->show_in_menu;
-				$callback         = ( $show_in_menu && is_bool( $show_in_menu ) ) ? 'standard' : 'custom';
+			// Check if post type has a particular parent menu location
+			$post_type_object = get_post_type_object( $post_type );
+			$show_in_menu     = $post_type_object->show_in_menu;
+			$callback         = ( $show_in_menu && is_bool( $show_in_menu ) ) ? 'standard' : 'custom';
 		    
 			add_submenu_page(
 				ptad_settings_page_parent( $post_type, $show_in_menu ), // $parent slug
@@ -147,9 +160,9 @@ function ptad_enable_pages() {
 				'ptad_settings_' . $callback // $function
 			);
 
-		} // end if
+		endif;
 
-	} // end foreach
+	endforeach;
 
 }
 
@@ -169,11 +182,10 @@ function ptad_register_settings() {
 		'ptad_sanitize_inputs' // $sanitize_callback
 	);
 
-
 	// add a settings section and field for each $post_type
-	foreach ( $post_types as $post_type ) {
+	foreach ( $post_types as $post_type ) :
 
-		if( post_type_exists( $post_type ) ) {
+		if( post_type_exists( $post_type ) ) :
 
 			// Register settings and call sanitization functions
 			add_settings_section(
@@ -197,9 +209,9 @@ function ptad_register_settings() {
 				)
 			);
 
-		} // endif
+		endif;
 
-	} // end foreach
+	endforeach;
 
 }
 
@@ -309,16 +321,20 @@ function ptad_settings_page( $post_type ) {
  * sanitize description inputs before saving option
  */
 function ptad_sanitize_inputs( $input ) {
+
 	// get all descriptions
 	$all_descriptions = (array) get_option( 'ptad_descriptions' );
+
 	// sanitize input
 	foreach( $input as $post_type => $description ) {
 		$sanitized_input[$post_type] = wp_kses_post( $description );
 	}
+
 	// merge with other descriptions into array setting
 	$input = array_merge( $all_descriptions, $sanitized_input );
 
 	return $input;
+
 }
 
 /**
@@ -327,7 +343,9 @@ function ptad_sanitize_inputs( $input ) {
  * See: http://core.trac.wordpress.org/ticket/14365
  */
 function ptad_allow_edit_posts() {
+
 	$capability = 'edit_posts';
+
 	/**
 	 * filter the capability for who can edit descriptions
 	 * 
@@ -336,6 +354,7 @@ function ptad_allow_edit_posts() {
 	$capability = apply_filters( 'ptad_description_capability', $capability );
 	
 	return esc_attr( $capability );
+
 }
 /* Set options page permissions to honor specific permissions for editing the description */
 add_filter( 'option_page_capability_ptad_descriptions', 'ptad_allow_edit_posts' );
@@ -354,7 +373,7 @@ add_filter( 'option_page_capability_ptad_descriptions', 'ptad_allow_edit_posts' 
 function ptad_admin_bar_links( $admin_bar ) {
 
 	if(
-		!is_admin()
+		! is_admin()
 		&& is_post_type_archive( ptad_get_post_types() )
 		&& current_user_can( ptad_allow_edit_posts() )
 	 ) {
@@ -363,6 +382,7 @@ function ptad_admin_bar_links( $admin_bar ) {
 		$post_type_name = $post_type_object->labels->name;
 
 		$link_text = sprintf( __( 'Edit %1$s Description', 'post-type-archive-descriptions' ), $post_type_name );
+
 		/**
 		 * filter the "Edit {Post Type} Description" link
 		 * @var $link_text string default test
@@ -387,6 +407,7 @@ function ptad_admin_bar_links( $admin_bar ) {
 		$description_page = $post_type . '_page_' . $post_type . '-description';
 
 		if( $screen->base == $description_page ) {
+
 			$post_type_object = get_post_type_object( $post_type );
 			$post_type_name = $post_type_object->labels->name;
 
@@ -417,6 +438,7 @@ add_action('admin_bar_menu', 'ptad_admin_bar_links',  100);
  * 
  ****************************************************/
 add_filter( 'get_the_archive_description', 'ptad_archive_description' );
+
 /**
  * filter the_archive_description & get_the_archive_description to show post type archive
  * @param  string $description original description
@@ -462,11 +484,13 @@ function ptad_get_post_type_description( $post_type = '' ) {
 	}
 
 	$all_descriptions = (array) get_option( 'ptad_descriptions' );
+
 	if( array_key_exists($post_type, $all_descriptions) ) {
 		$post_type_description = $all_descriptions[$post_type];
 	} else {
 		$post_type_description = '';
 	}
+
 	$description = apply_filters( 'the_content', $post_type_description );
 
 	return $description;
@@ -476,6 +500,7 @@ function ptad_get_post_type_description( $post_type = '' ) {
 if ( ! defined( 'QTX_VERSION' ) ) {
 
 	add_filter( 'ptad_wp_editor_settings', 'ptad_qtranslate_editor_args' );
+
 	/**
 	 * filter editor settings to add necessary text editor classes for support
 	 * @param  array $editor_settings tinymce settings array
@@ -488,6 +513,7 @@ if ( ! defined( 'QTX_VERSION' ) ) {
 	}
 	
 	add_filter('qtranslate_load_admin_page_config', 'ptad_qtranslate_support', 99); // 99 priority is important, loaded after registered post types
+
 	/**
 	 * filter qtranslate so it knows to pay attention on archive description editor pages
 	 */
@@ -522,6 +548,7 @@ if ( ! defined( 'QTX_VERSION' ) ) {
 		$page_configs[] = $page_config;
 
 		return $page_configs;
+
 	}
 
 }
