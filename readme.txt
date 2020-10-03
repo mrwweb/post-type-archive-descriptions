@@ -1,5 +1,5 @@
 === Post Type Archive Descriptions ===
-Contributors: mrwweb
+Contributors: mrwweb, tusko-trush
 Donate link: https://www.paypal.me/rootwiley
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
