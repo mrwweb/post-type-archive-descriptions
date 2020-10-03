@@ -281,11 +281,16 @@ function ptad_editor_field( $args ) {
 	
 }
 
-function ptad_get_post_type_from_page_slug() {
+function ptad_get_post_type_from_admin_page_slug() {
 	$page = $_GET['page'];
 	$post_type = str_replace( '-description', '', $page );
 
 	return $post_type;
+}
+
+function ptad_get_post_type_from_queried_object() {
+	$queried_object = get_queried_object();
+	return $queried_object->name;
 }
 
 /**
@@ -295,7 +300,7 @@ function ptad_settings_page( $post_type ) {
 
 	// occurs when parent menu item is not the post type
 	if( empty( $post_type ) ) {
-		$post_type = ptad_get_post_type_from_page_slug();
+		$post_type = ptad_get_post_type_from_admin_page_slug();
 	}
 	?>
 
@@ -371,8 +376,7 @@ function ptad_admin_bar_links( $admin_bar ) {
 		&& is_post_type_archive( ptad_get_post_types() )
 		&& current_user_can( ptad_allow_edit_posts() )
 	 ) {
-		$queried_object = get_queried_object();
-		$post_type = $queried_object->name;
+		$post_type = ptad_get_post_type_from_queried_object();
 		$post_type_object = get_post_type_object( $post_type );
 		$post_type_name = $post_type_object->labels->name;
 
@@ -398,7 +402,7 @@ function ptad_admin_bar_links( $admin_bar ) {
 	if( is_admin() && isset( $_GET['page'] ) ) {
 
 		$screen = get_current_screen();
-		$post_type = ptad_get_post_type_from_page_slug();
+		$post_type = ptad_get_post_type_from_admin_page_slug();
 		$slug = $post_type . '-description';
 		$base_ends_with_slug = substr_compare( $screen->base, $slug, strlen( $screen->base ) - strlen( $slug ), strlen( $slug ) );
 
@@ -476,7 +480,7 @@ function ptad_get_post_type_description( $post_type = '' ) {
 	
 	// get global $post_type if not specified
 	if ( '' == $post_type ) {
-		global $post_type;
+		$post_type = ptad_get_post_type_from_queried_object();
 	}
 
 	$all_descriptions = (array) get_option( 'ptad_descriptions' );
