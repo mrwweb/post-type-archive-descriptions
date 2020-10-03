@@ -4,7 +4,7 @@ Plugin Name: Post Type Archive Descriptions
 Description: Enables an editable description for a post type to display at the top of the post type archive page.
 Author: Mark Root-Wiley, MRW Web Design, NonprofitWP.org
 Author URI: https://MRWweb.com
-Version: 1.1.5
+Version: 1.2.beta2
 License: GPL v3
 Text Domain: post-type-archive-descriptions
 
@@ -42,6 +42,31 @@ function ptad_get_post_types() {
 	$post_types = apply_filters( 'ptad_post_types', get_post_types( $args ) );
 
 	return $post_types;
+}
+
+/**
+ * Output filterable parent of Settings page
+ *
+ * @param string $post_type name of post type for the page
+ * @return bool|string parent for settings page
+ */
+function ptad_settings_page_parent( $post_type, $show_in_menu = false ) {
+ 
+	$settings_page_parent = $show_in_menu;
+	
+	// Default is standard post type editing screen
+	if( $settings_page_parent && is_bool( $settings_page_parent ) ) {
+		$settings_page_parent = "edit.php?post_type=$post_type";
+	}
+	
+	/**
+	 * filter for parent of Archive Settings page
+	 *
+	 * @var string $settings_page_parent address (default: "edit.php?post_type=$post_type")
+	 * @var string $post_type post_type name if needed
+	 */
+	$settings_page_parent = apply_filters( 'ptad_admin_parent', $settings_page_parent, $post_type );
+	return $settings_page_parent;
 }
 
 /**
@@ -108,13 +133,18 @@ function ptad_enable_pages() {
 
 		if( post_type_exists( $post_type ) ) {
 
+				// Check if post type has a particular parent menu location
+				$post_type_object = get_post_type_object( $post_type );
+				$show_in_menu     = $post_type_object->show_in_menu;
+				$callback         = ( $show_in_menu && is_bool( $show_in_menu ) ) ? 'standard' : 'custom';
+		    
 			add_submenu_page(
-				'edit.php?post_type=' . $post_type, // $parent_slug
+				ptad_settings_page_parent( $post_type, $show_in_menu ), // $parent slug
 				ptad_settings_page_title( $post_type, 'name' ), // $page_title
 				ptad_settings_menu_label( $post_type, 'name' ), // $menu_label
 				ptad_allow_edit_posts(), // $capability
 				$post_type . '-description', // $menu_slug
-				'ptad_settings_page' // $function
+				'ptad_settings_' . $callback // $function
 			);
 
 		} // end if
@@ -241,11 +271,29 @@ function ptad_editor_field( $args ) {
 }
 
 /**
- * Output settings pages
+ * Output settings pages for standard CPT setup
  */
-function ptad_settings_page() {
+function ptad_settings_standard() {
 	$screen = get_current_screen();
 	$post_type = $screen->post_type;
+	
+	ptad_settings_page( $post_type );
+}
+
+/**
+ * Output settings pages for custom CPT setup
+ */
+function ptad_settings_custom() {
+	$page = $_GET['page'];
+	$post_type = str_replace( '-description', '', $page );
+	
+	ptad_settings_page( $post_type );
+}
+
+/**
+ * Output settings pages
+ */
+function ptad_settings_page( $post_type ) {
 	?>
 	<div class="wrap">
 		<h2><?php echo ptad_settings_page_title( $post_type, 'name' ); ?></h2>
@@ -322,10 +370,12 @@ function ptad_admin_bar_links( $admin_bar ) {
 		 */
 		$link_text = apply_filters( 'ptad_edit_description_link', $link_text, $post_type_name );
 
+		$parent_page = ptad_settings_page_parent( $post_type, $post_type_object->show_in_menu );
+		
 		$args = array(
 			'id'    => 'wp-admin-bar-edit',
 			'title' => $link_text,
-			'href'  => admin_url( 'edit.php?post_type=' . $post_type . '&page=' . $post_type . '-description' )
+			'href'  => admin_url( $parent_page . '&page=' . $post_type . '-description' )
 		);
 		$admin_bar->add_menu( $args );
 	}
