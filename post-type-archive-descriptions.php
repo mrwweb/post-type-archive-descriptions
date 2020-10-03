@@ -64,8 +64,8 @@ function ptad_settings_page_parent( $post_type, $show_in_menu = false ) {
 	/**
 	 * filter for parent of Archive Settings page
 	 *
-	 * @var string $settings_page_parent address (default: "edit.php?post_type=$post_type")
-	 * @var string $post_type post_type name if needed
+	 * @param string $settings_page_parent address (default: "edit.php?post_type=$post_type")
+	 * @param string $post_type post_type name if needed
 	 */
 	$settings_page_parent = apply_filters( 'ptad_admin_parent', $settings_page_parent, $post_type );
 
@@ -91,8 +91,8 @@ function ptad_settings_page_title( $post_type, $pt_val = 'label' ) {
 	/**
 	 * filter for admin menu label
 	 * 
-	 * @var string $settings_page_menu_label label text (default: "Description for the {Post Type} Archive")
-	 * @var string $post_type post_type name if needed
+	 * @param string $settings_page_menu_label label text (default: "Description for the {Post Type} Archive")
+	 * @param string $post_type post_type name if needed
 	 */
 	$settings_page_title = apply_filters( 'ptad_admin_title', $settings_page_title, $post_type );
 
@@ -118,8 +118,8 @@ function ptad_settings_menu_label( $post_type, $pt_val = 'label' ) {
 	/**
 	 * filter for admin menu label
 	 * 
-	 * @var string $settings_page_menu_label label text (default: "Description")
-	 * @var string $post_type post_type name if needed
+	 * @param string $settings_page_menu_label label text (default: "Description")
+	 * @param string $post_type post_type name if needed
 	 */
 	$settings_page_menu_label = apply_filters( 'ptad_menu_label', $settings_page_menu_label, $post_type );
 
@@ -339,7 +339,7 @@ function ptad_allow_edit_posts() {
 	/**
 	 * filter the capability for who can edit descriptions
 	 * 
-	 * @var string $capability capability required to edit post type descriptions (default: edit_posts)
+	 * @param string $capability capability required to edit post type descriptions (default: edit_posts)
 	 */
 	$capability = apply_filters( 'ptad_description_capability', $capability );
 	
@@ -375,8 +375,8 @@ function ptad_admin_bar_links( $admin_bar ) {
 
 		/**
 		 * filter the "Edit {Post Type} Description" link
-		 * @var $link_text string default test
-		 * @var $post_type_name string name of post type for targeting specific type
+		 * @param $link_text string default test
+		 * @param $post_type_name string name of post type for targeting specific type
 		 */
 		$link_text = apply_filters( 'ptad_edit_description_link', $link_text, $post_type_name );
 
@@ -404,8 +404,8 @@ function ptad_admin_bar_links( $admin_bar ) {
 			$link_text = sprintf( __( 'View %1$s Archive', 'post-type-archive-descriptions' ), $post_type_name );
 			/**
 			 * filter the "View {Post Type} Archive" link
-			 * @var $link_text string default test
-			 * @var $post_type_name string name of post type for targeting specific type
+			 * @param $link_text string default test
+			 * @param $post_type_name string name of post type for targeting specific type
 			 */
 			$link_text = apply_filters( 'ptad_view_archive_link', $link_text, $post_type_name );
 
