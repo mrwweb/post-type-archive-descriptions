@@ -281,6 +281,13 @@ function ptad_editor_field( $args ) {
 	
 }
 
+function ptad_get_post_type_from_page_slug() {
+	$page = $_GET['page'];
+	$post_type = str_replace( '-description', '', $page );
+
+	return $post_type;
+}
+
 /**
  * Output settings pages
  */
@@ -288,10 +295,7 @@ function ptad_settings_page( $post_type ) {
 
 	// occurs when parent menu item is not the post type
 	if( empty( $post_type ) ) {
-
-		$page = $_GET['page'];
-		$post_type = str_replace( '-description', '', $page );
-
+		$post_type = ptad_get_post_type_from_page_slug();
 	}
 	?>
 
@@ -367,7 +371,8 @@ function ptad_admin_bar_links( $admin_bar ) {
 		&& is_post_type_archive( ptad_get_post_types() )
 		&& current_user_can( ptad_allow_edit_posts() )
 	 ) {
-		global $post_type;
+		$queried_object = get_queried_object();
+		$post_type = $queried_object->name;
 		$post_type_object = get_post_type_object( $post_type );
 		$post_type_name = $post_type_object->labels->name;
 
@@ -390,18 +395,20 @@ function ptad_admin_bar_links( $admin_bar ) {
 		$admin_bar->add_menu( $args );
 	}
 
-	if( is_admin() ) {
+	if( is_admin() && isset( $_GET['page'] ) ) {
 
 		$screen = get_current_screen();
-		$post_type = $screen->post_type;
-		$description_page = $post_type . '_page_' . $post_type . '-description';
+		$post_type = ptad_get_post_type_from_page_slug();
+		$slug = $post_type . '-description';
+		$base_ends_with_slug = substr_compare( $screen->base, $slug, strlen( $screen->base ) - strlen( $slug ), strlen( $slug ) );
 
-		if( $screen->base == $description_page ) {
+		if( 0 === $base_ends_with_slug ) {
 
 			$post_type_object = get_post_type_object( $post_type );
 			$post_type_name = $post_type_object->labels->name;
 
 			$link_text = sprintf( __( 'View %1$s Archive', 'post-type-archive-descriptions' ), $post_type_name );
+
 			/**
 			 * filter the "View {Post Type} Archive" link
 			 * @param $link_text string default test
@@ -409,7 +416,6 @@ function ptad_admin_bar_links( $admin_bar ) {
 			 */
 			$link_text = apply_filters( 'ptad_view_archive_link', $link_text, $post_type_name );
 
-			$post_type_object = get_post_type_object( $post_type );
 			$args = array(
 				'id'    => 'wp-admin-bar-edit',
 				'title' => $link_text,
