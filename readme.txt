@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
 Requires at least: 4.6
 Tested up to: 5.0
-Stable tag: 1.1.5
+Stable tag: 1.2.0
 
 == Description ==
 
@@ -56,6 +56,7 @@ Filters:
 
 - `ptad_post_types` - specify the post types with a description (default is all non-built_in post types where `has_archive` is true)
 - `ptad_admin_title` - Modify admin page title
+- `ptad_admin_parent` - Change parent page of the Description edit page
 - `ptad_menu_label` - Modify the menu item label in the admin
 - `ptad_description_capability` - Set capability of who can edit descriptions. Default: `edit_posts`
 - `ptad_edit_description_link` - Modify admin bar link to edit the description
@@ -75,6 +76,11 @@ Actions:
 2. The post type archive description displayed (automatically!) in the Twenty Fifteen theme. The plugin also adds the "Edit Books Description" link.
 
 == Changelog ==
+= 1.2.0 (October 3, 2020) =
+* [Fix] Now supports post types in admin submenus other than the default. Big props to Jeremy Carlson, @eyesofjeremy
+* [Fix] Get correct description and don't show warning on a Post Type Archive that shows multiple post types (probably via pre_get_posts)
+* Code cleanup
+
 = 1.1.5 (September 23, 2019) =
 * Add global and post-type-specific actions before and after the Description Editor on the admin editing screen: `ptad_before_editor`, `ptad_before_editor_{post_type}`, `ptad_after_editor`, and `ptad_after_editor_{post_type}`
 * Don't sanitize plugin output so shortcodes work. Thanks @mmcginnis.
@@ -103,6 +109,9 @@ Actions:
 * Forked from [CPT Descriptions](https://wordpress.org/plugins/cpt-descriptions/)
 
 == Upgrade Notice ==
+= 1.2.0 =
+Fixes for interesting non-standard post type cases. Thanks to Jeremy Carlson for a major fix!
+
 = 1.1.5 =
 New actions for developers!
 
