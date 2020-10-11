@@ -1,5 +1,5 @@
 === Post Type Archive Descriptions ===
-Contributors: mrwweb, tusko-trush
+Contributors: mrwweb, tusko-trush, jcdesign
 Donate link: https://www.paypal.me/rootwiley
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -77,7 +77,7 @@ Actions:
 
 == Changelog ==
 = 1.2.0 (October 3, 2020) =
-* [Fix] Now supports post types in admin submenus other than the default. Big props to Jeremy Carlson, @eyesofjeremy
+* [Fix] Now supports post types in admin submenus other than the default. Big props to Jeremy Carlson, @jcdesign
 * [Fix] Get correct description and don't show warning on a Post Type Archive that shows multiple post types (probably via pre_get_posts)
 * Code cleanup
 
