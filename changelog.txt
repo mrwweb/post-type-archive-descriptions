@@ -1,0 +1,37 @@
+= 1.3.0 (February 6, 2020) =
+* [NEW!] Support for Polylang and WPML translations
+* [NEW!] Automatically add archive description to The Events Calendar plugin's archive pages (Month, List, Week, Map, etc.)
+* [Fix] Resolve warnings on Event Category pages when using The Events Calendar or other similar situations
+* [Dev] Reorganize code
+
+= 1.2.0 (October 3, 2020) =
+* [Fix] Now supports post types in admin submenus other than the default. Big props to Jeremy Carlson, @jcdesign
+* [Fix] Get correct description and don't show warning on a Post Type Archive that shows multiple post types (probably via pre_get_posts)
+* [Dev] Code cleanup
+
+= 1.1.5 (September 23, 2019) =
+* Add global and post-type-specific actions before and after the Description Editor on the admin editing screen: `ptad_before_editor`, `ptad_before_editor_{post_type}`, `ptad_after_editor`, and `ptad_after_editor_{post_type}`
+* Don't sanitize plugin output so shortcodes work. Thanks @mmcginnis.
+
+= 1.1.4 (August 13, 2018) =
+* [Fix] Fully restrict access to Post Type Description edit screen when `ptad_description_capability` filter is used. [Props](https://wordpress.org/support/topic/ptad_description_capability-filter-should-control-display-of-submenu-pages/) @deucecreative
+* Bump requires version to 4.6 and remove `load_plugin_textdomain` usage
+
+= 1.1.3 (May 31, 2018) =
+* [Fix] Remove deprecated screen icon notice on Archive Description edit screen
+* Bump tested up to version
+
+= 1.1.2 (April 25, 2017) =
+* [Fix] Only show "Edit Description" admin bar link if user has correct permissions
+* [Docs] Clarify one function's inline documentation
+
+= 1.1.1 (April 18, 2016) =
+* [Fix] Typo resulted in error and broken qTranslate-X support.
+
+= 1.1.0 (March 30, 2016) =
+* [New] New `ptad_wp_editor_settings` filter to modify Post Type Description TinyMCE settings. Thank you [@katanyan](https://profiles.wordpress.org/katanyan).
+* [New] Support for qTranslate-X. Thank you to [@Tusko on GitHub](https://github.com/Tusko).
+
+= 1.0.0 (May 14, 2015) =
+* Initial release.
+* Forked from [CPT Descriptions](https://wordpress.org/plugins/cpt-descriptions/)

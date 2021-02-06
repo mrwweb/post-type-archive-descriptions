@@ -5,21 +5,23 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
 Requires at least: 4.6
-Tested up to: 5.5
-Stable tag: 1.2.0
+Tested up to: 5.6
+Stable tag: 1.3.0
 
 == Description ==
 
-Enables an editable description for a post type to display at the top of the post type archive page. Output the description via the native `the_archive_description()` function that already works with a taxonomy term descriptions.
+Enables an editable description to display on post type archive pages. Show the description with WordPress's `the_archive_description()` function that also displays taxonomy term descriptions. Will work automatically with many themes, including most default WordPress themes.
 
-Automatically works for any theme that uses `the_archive_description()` (added in WordPress 4.1) like [Twenty Fifteen](https://wordpress.org/themes/twentyfifteen/), [Twenty Sixteen](https://wordpress.org/themes/twentysixteen/), [Twenty Seventeen](https://wordpress.org/themes/twentyseventeen/) or most  [_s-based themes](https://underscores.me).
+**Translations:** Archive descriptions are translatable via [Polylang](https://wordpress.org/plugins/polylang/), [WPML (affiliate link)](https://wpml.org/?aid=255503&affiliate_key=8ZIRtAbJbX4x&dr=post-type-archive-descriptions-plugin), and [qTranslate-X](https://wordpress.org/plugins/qtranslate-x/).
+
+**The Events Calendar:** The archive description is automatically added above the Events Bar when using the latest templates from [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/). Filter the location of the description or disable it entirely with the `ptad_tribe_template_before_include` filter.
 
 = Other Plugins by MRWweb =
 
-* [Feature a Page Widget](http://wordpress.org/plugins/feature-a-page-widget/) - Feature a single page in any sidebar.
-* [MRW Web Design Simple TinyMCE](https://wordpress.org/plugins/mrw-web-design-simple-tinymce/) - Get rid of bad and obscure TinyMCE buttons. Move the rest to a single top row.
+* [MRW Simplified Editor](https://wordpress.org/plugins/mrw-web-design-simple-tinymce/) - Get rid of bad and obscure TinyMCE buttons. Move the rest to a single top row.
 * [Post Status Menu Items](http://wordpress.org/plugins/post-status-menu-items/) - Adds post status links–e.g. "Draft" (7)–to post type admin menus.
 * [Hawaiian Characters](http://wordpress.org/plugins/hawaiian-characters/) - Adds the correct characters with diacriticals to the WordPress editor Character Map for Hawaiian
+* [Feature a Page Widget](http://wordpress.org/plugins/feature-a-page-widget/) - Feature a single page in any sidebar.
 
 == Installation ==
 
@@ -38,11 +40,11 @@ Be aware that as of 5 Dec 2019, it [appears the Twenty Nineteen theme will *not*
 
 = How do I display a custom post type's description? =
 
-In WordPress 4.1, [`the_archive_description()`](https://developer.wordpress.org/reference/functions/the_archive_description/) and [`get_the_archive_description()`](https://developer.wordpress.org/reference/functions/get_the_archive_description/) were introduced. As long as your theme supports those functions, you don't have to do anything!
-
-Older themes can use `ptad_get_post_type_description()` or `ptad_the_post_type_description()` to return or echo a post type description. Both functions take an optional `$post_type` slug argument to return a specific post type. However, that is unnecesarry on a page that returns `true` for is_post_type_archive()`.
+Use [`the_archive_description()`](https://developer.wordpress.org/reference/functions/the_archive_description/) or [`get_the_archive_description()`](https://developer.wordpress.org/reference/functions/get_the_archive_description/).
 
 Chances are you want this in the `archive-{post_type_slug}.php` or `archive.php` template files.
+
+As of v1.3.0 of this plugin, the archive description is automatically added to The Events Calendar archive pages using the plugin's latest design.
 
 = Which post types get a description? =
 
@@ -50,7 +52,7 @@ By default, any custom post type excluding Posts and Pages that was registered w
 
 = Are there filters & actions to modify the plugin? =
 
-Glad you asked. Yes. Plenty!
+Yes. Plenty!
 
 Filters:
 
@@ -61,6 +63,7 @@ Filters:
 - `ptad_description_capability` - Set capability of who can edit descriptions. Default: `edit_posts`
 - `ptad_edit_description_link` - Modify admin bar link to edit the description
 - `ptad_view_archive_link` - Modify admin bar link to view the post type archive
+- `ptad_tribe_template_before_include` - Modify which The Events Calendar template part the description should appear _before_, or `false` to disable automatic output.
 
 Actions:
 
@@ -73,53 +76,20 @@ Actions:
 
 1. The editing interface for writing a post type archive description. This plugin adds the "Archive Description" link in the left menu, the "View Books Archive" link in the admin bar, and, of course, the field to save the description.
 
-2. The post type archive description displayed (automatically!) in the Twenty Fifteen theme. The plugin also adds the "Edit Books Description" link.
+2. The post type archive description displayed (automatically!) in the Twenty Fifteen theme. The plugin also adds the "Edit Books Description" link in the Admin Bar.
 
 == Changelog ==
+= 1.3.0 (February 6, 2020) =
+* [NEW!] Support for Polylang and WPML translations
+* [NEW!] Automatically add archive description to The Events Calendar plugin's archive pages (Month, List, Week, Map, etc.)
+* [Fix] Resolve warnings on Event Category pages when using The Events Calendar or other similar situations
+* [Dev] Reorganize code
+
 = 1.2.0 (October 3, 2020) =
 * [Fix] Now supports post types in admin submenus other than the default. Big props to Jeremy Carlson, @jcdesign
 * [Fix] Get correct description and don't show warning on a Post Type Archive that shows multiple post types (probably via pre_get_posts)
-* Code cleanup
-
-= 1.1.5 (September 23, 2019) =
-* Add global and post-type-specific actions before and after the Description Editor on the admin editing screen: `ptad_before_editor`, `ptad_before_editor_{post_type}`, `ptad_after_editor`, and `ptad_after_editor_{post_type}`
-* Don't sanitize plugin output so shortcodes work. Thanks @mmcginnis.
-
-= 1.1.4 (August 13, 2018) =
-* [Fix] Fully restrict access to Post Type Description edit screen when `ptad_description_capability` filter is used. [Props](https://wordpress.org/support/topic/ptad_description_capability-filter-should-control-display-of-submenu-pages/) @deucecreative
-* Bump requires version to 4.6 and remove `load_plugin_textdomain` usage
-
-= 1.1.3 (May 31, 2018) =
-* [Fix] Remove deprecated screen icon notice on Archive Description edit screen
-* Bump tested up to version
-
-= 1.1.2 (April 25, 2017) =
-* [Fix] Only show "Edit Description" admin bar link if user has correct permissions
-* [Docs] Clarify one function's inline documentation
-
-= 1.1.1 (April 18, 2016) =
-* [Fix] Typo resulted in error and broken qTranslate-X support.
-
-= 1.1.0 (March 30, 2016) =
-* [New] New `ptad_wp_editor_settings` filter to modify Post Type Description TinyMCE settings. Thank you [@katanyan](https://profiles.wordpress.org/katanyan).
-* [New] Support for qTranslate-X. Thank you to [@Tusko on GitHub](https://github.com/Tusko).
-
-= 1.0.0 (May 14, 2015) =
-* Initial release.
-* Forked from [CPT Descriptions](https://wordpress.org/plugins/cpt-descriptions/)
+* [Dev] Code cleanup
 
 == Upgrade Notice ==
-= 1.2.0 =
-Fixes for interesting non-standard post type cases. Thanks to Jeremy Carlson for a major fix!
-
-= 1.1.5 =
-New actions for developers!
-
-= 1.1.1 =
-Resolve error. Fix qTranslate-X support.
-
-= 1.1.0 =
-New filter for editor settings and qTranslate-X support.
-
-= 1.0.0 =
-Let's do this! 
+= 1.3.0 =
+New compatibility with Polylang, WPML, and The Events Calendar
