@@ -377,26 +377,31 @@ function ptad_admin_bar_links( $admin_bar ) {
 		&& current_user_can( ptad_allow_edit_posts() )
 	 ) {
 		$post_type = ptad_get_post_type_from_queried_object();
-		$post_type_object = get_post_type_object( $post_type );
-		$post_type_name = $post_type_object->labels->name;
 
-		$link_text = sprintf( __( 'Edit %1$s Description', 'post-type-archive-descriptions' ), $post_type_name );
+		if( is_object( $post_type ) ) {
 
-		/**
-		 * filter the "Edit {Post Type} Description" link
-		 * @param $link_text string default test
-		 * @param $post_type_name string name of post type for targeting specific type
-		 */
-		$link_text = apply_filters( 'ptad_edit_description_link', $link_text, $post_type_name );
+			$post_type_object = get_post_type_object( $post_type );
+			$post_type_name = $post_type_object->labels->name;
 
-		$parent_page = ptad_settings_page_parent( $post_type, $post_type_object->show_in_menu );
-		
-		$args = array(
-			'id'    => 'wp-admin-bar-edit',
-			'title' => $link_text,
-			'href'  => admin_url( $parent_page . '&page=' . $post_type . '-description' )
-		);
-		$admin_bar->add_menu( $args );
+			$link_text = sprintf( __( 'Edit %1$s Description', 'post-type-archive-descriptions' ), $post_type_name );
+
+			/**
+			 * filter the "Edit {Post Type} Description" link
+			 * @param $link_text string default test
+			 * @param $post_type_name string name of post type for targeting specific type
+			 */
+			$link_text = apply_filters( 'ptad_edit_description_link', $link_text, $post_type_name );
+
+			$parent_page = ptad_settings_page_parent( $post_type, $post_type_object->show_in_menu );
+			
+			$args = array(
+				'id'    => 'wp-admin-bar-edit',
+				'title' => $link_text,
+				'href'  => admin_url( $parent_page . '&page=' . $post_type . '-description' )
+			);
+			$admin_bar->add_menu( $args );
+			
+		}
 	}
 
 	if( is_admin() && isset( $_GET['page'] ) ) {
@@ -497,58 +502,5 @@ function ptad_get_post_type_description( $post_type = '' ) {
 
 }
 
-if ( ! defined( 'QTX_VERSION' ) ) {
-
-	add_filter( 'ptad_wp_editor_settings', 'ptad_qtranslate_editor_args' );
-
-	/**
-	 * filter editor settings to add necessary text editor classes for support
-	 * @param  array $editor_settings tinymce settings array
-	 * @return array                  filtered settings
-	 */
-	function ptad_qtranslate_editor_args( $editor_settings ) {
-		 $editor_settings['classes'] = $editor_settings['classes'] . ' multilanguage-input qtranxs-translatable';
-
-		 return $editor_settings;
-	}
-	
-	add_filter('qtranslate_load_admin_page_config', 'ptad_qtranslate_support', 99); // 99 priority is important, loaded after registered post types
-
-	/**
-	 * filter qtranslate so it knows to pay attention on archive description editor pages
-	 */
-	function ptad_qtranslate_support( $page_configs ) {
-
-		//edit.php?post_type=$post_type&page=
-		$page_config = array();
-		
-		//get post types
-		$post_types = ptad_get_post_types();
-
-		// add a settings section and field for each $post_type
-		foreach ( $post_types as $post_type ) {
-
-			if( post_type_exists( $post_type ) ) {
-				$page_config['pages'] = array( 'edit.php' => 'post_type=' . $post_type . '&page=' );
-			}
-			
-		}
-
-		$page_config['forms'] = array();
-
-		$f = array();
-
-		$f['fields'] = array();
-		$fields = &$f['fields'];
-
-		//textarea support
-		$fields[] = array( 'tag' => 'textarea' );
-
-		$page_config['forms'][] = $f;
-		$page_configs[] = $page_config;
-
-		return $page_configs;
-
-	}
-
-}
+require_once( 'compat/qtranslate-x.php' );
+require_once( 'compat/the-events-calendar.php' );
