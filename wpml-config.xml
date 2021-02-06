@@ -1,0 +1,8 @@
+<!-- Add support for WPML and Polylang -->
+<wpml-config>
+	<admin-texts>
+		<key name="ptad_descriptions">
+			<key name="*"/>
+		</key>
+	</admin-texts>
+</wpml-config>
