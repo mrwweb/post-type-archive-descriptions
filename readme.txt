@@ -5,7 +5,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
 Requires at least: 4.6
-Tested up to: 5.6
+Tested up to: 5.8
 Stable tag: 1.3.0
 
 == Description ==
@@ -49,6 +49,37 @@ As of v1.3.0 of this plugin, the archive description is automatically added to T
 = Which post types get a description? =
 
 By default, any custom post type excluding Posts and Pages that was registered with `'has_archive' => true`. There is a filter (see below) to add support for *any* post type.
+
+= How do I set up an editable description for my Blog / Posts? =
+
+Since this plugin does not support descriptions for Posts or Pages, I recommend a different approach.
+
+First make the blog page (aka the "Page for Posts") editable with this snippet in `functions.php` or an `mu-plugin`:
+
+`add_filter( 'replace_editor', 'ptad_enable_gutenberg_editor_for_blog_page', 10, 2 );
+/**
+ * Simulate non-empty content to enable Gutenberg editor on the Blog page
+ *
+ * @param bool    $replace Whether to replace the editor.
+ * @param WP_Post $post    Post object.
+ * @return bool
+ *
+ * @see https://wordpress.stackexchange.com/a/350563/9844
+ */
+function ptad_enable_gutenberg_editor_for_blog_page( $replace, $post ) {
+
+    if ( ! $replace && absint( get_option( 'page_for_posts' ) ) === $post->ID && empty( $post->post_content ) ) {
+        // This comment will be removed by Gutenberg since it won't parse into block.
+        $post->post_content = '<!--non-empty-content-->';
+    }
+
+    return $replace;
+
+}`
+
+The output that content on the blog page with the `home.php` template:
+
+`echo '<div class="archive-description blog-description">' . apply_filters( 'the_content', get_the_content( null, false, (int) get_option( 'page_for_posts' ) ) ) . '</div>';`
 
 = Are there filters & actions to modify the plugin? =
 
