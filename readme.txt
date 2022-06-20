@@ -77,7 +77,7 @@ function ptad_enable_gutenberg_editor_for_blog_page( $replace, $post ) {
 
 }`
 
-The output that content on the blog page with the `home.php` template:
+Then output that content on the blog page with the `home.php` template:
 
 `echo '<div class="archive-description blog-description">' . apply_filters( 'the_content', get_the_content( null, false, (int) get_option( 'page_for_posts' ) ) ) . '</div>';`
 
