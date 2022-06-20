@@ -18,10 +18,10 @@ function ptad_admin_bar_links( $admin_bar ) {
 		&& current_user_can( ptad_allow_edit_posts() )
 	 ) {
 		$post_type = ptad_get_post_type_from_queried_object();
+		$post_type_object = get_post_type_object( $post_type );
 
-		if( is_object( $post_type ) ) {
+		if( is_object( $post_type_object ) ) {
 
-			$post_type_object = get_post_type_object( $post_type );
 			$post_type_name = $post_type_object->labels->name;
 
 			$link_text = sprintf( __( 'Edit %1$s Description', 'post-type-archive-descriptions' ), $post_type_name );
