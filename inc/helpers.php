@@ -19,3 +19,15 @@ function ptad_get_post_types() {
 	return $post_types;
 
 }
+
+function ptad_get_post_type_from_admin_page_slug() {
+	$page = $_GET['page'];
+	$post_type = preg_replace( '/-description$/', '', $page );
+
+	return $post_type;
+}
+
+function ptad_get_post_type_from_queried_object() {
+	$queried_object = get_queried_object();
+	return $queried_object->name;
+}
