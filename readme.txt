@@ -5,8 +5,8 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
 Requires at least: 4.6
-Tested up to: 5.8
-Stable tag: 1.3.0
+Tested up to: 6.0
+Stable tag: 1.3.1
 
 == Description ==
 
@@ -21,7 +21,6 @@ Enables an editable description to display on post type archive pages. Show the 
 * [MRW Simplified Editor](https://wordpress.org/plugins/mrw-web-design-simple-tinymce/) - Get rid of bad and obscure TinyMCE buttons. Move the rest to a single top row.
 * [Post Status Menu Items](http://wordpress.org/plugins/post-status-menu-items/) - Adds post status links–e.g. "Draft" (7)–to post type admin menus.
 * [Hawaiian Characters](http://wordpress.org/plugins/hawaiian-characters/) - Adds the correct characters with diacriticals to the WordPress editor Character Map for Hawaiian
-* [Feature a Page Widget](http://wordpress.org/plugins/feature-a-page-widget/) - Feature a single page in any sidebar.
 
 == Installation ==
 
@@ -110,17 +109,13 @@ Actions:
 2. The post type archive description displayed (automatically!) in the Twenty Fifteen theme. The plugin also adds the "Edit Books Description" link in the Admin Bar.
 
 == Changelog ==
-= 1.3.0 (February 6, 2020) =
-* [NEW!] Support for Polylang and WPML translations
-* [NEW!] Automatically add archive description to The Events Calendar plugin's archive pages (Month, List, Week, Map, etc.)
-* [Fix] Resolve warnings on Event Category pages when using The Events Calendar or other similar situations
-* [Dev] Reorganize code
-
-= 1.2.0 (October 3, 2020) =
-* [Fix] Now supports post types in admin submenus other than the default. Big props to Jeremy Carlson, @jcdesign
-* [Fix] Get correct description and don't show warning on a Post Type Archive that shows multiple post types (probably via pre_get_posts)
-* [Dev] Code cleanup
+= 1.3.1 (June 21, 2022) =
+* Tested up to 6.0.
+* [Fix] The "Edit Archive" admin bar button was broken in the last version. It is now fixed
+* [Fix] Prevent error when editing the Description of a post type that contains "-description" in the post type slug. Hilariously edge-casey.
+* [Dev] Minor code reorganization
+* Want a way to edit the blog page? [Leave your feedback!](https://github.com/mrwweb/post-type-archive-descriptions/issues/22)
 
 == Upgrade Notice ==
-= 1.3.0 =
-New compatibility with Polylang, WPML, and The Events Calendar
+= 1.3.1 =
+Tested up to WP 6.0. Restore missing "Edit Description" buttons in admin bar.
