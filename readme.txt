@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
 Requires at least: 4.6
 Tested up to: 6.0
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 
 == Description ==
 
@@ -109,7 +109,7 @@ Actions:
 2. The post type archive description displayed (automatically!) in the Twenty Fifteen theme. The plugin also adds the "Edit Books Description" link in the Admin Bar.
 
 == Changelog ==
-= 1.3.1 (June 21, 2022) =
+= 1.4.0 (June 21, 2022) =
 * Tested up to 6.0.
 * [Fix] The "Edit Archive" admin bar button was broken in the last version. It is now fixed
 * [Fix] Prevent error when editing the Description of a post type that contains "-description" in the post type slug. Hilariously edge-casey.
@@ -118,5 +118,5 @@ Actions:
 * Want a way to edit the blog page? [Leave your feedback!](https://github.com/mrwweb/post-type-archive-descriptions/issues/22)
 
 == Upgrade Notice ==
-= 1.3.1 =
-Tested up to WP 6.0. Restore missing "Edit Description" buttons in admin bar.
+= 1.4.0 =
+Tested up to WP 6.0. Restore missing "Edit Description" buttons in admin bar and description on The Events Calendar calendar page.
