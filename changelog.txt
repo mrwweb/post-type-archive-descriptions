@@ -2,6 +2,7 @@
 * Tested up to 6.0.
 * [Fix] The "Edit Archive" admin bar button was broken in the last version. It is now fixed
 * [Fix] Prevent error when editing the Description of a post type that contains "-description" in the post type slug. Hilariously edge-casey.
+* [Fix] Restore archive description before events bar component in The Events Calendar
 * [Dev] Minor code reorganization
 * Want a way to edit the blog page? [Leave your feedback!](https://github.com/mrwweb/post-type-archive-descriptions/issues/22)
 
