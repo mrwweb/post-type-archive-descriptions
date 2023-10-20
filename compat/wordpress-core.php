@@ -1,9 +1,7 @@
 <?php
-/****************************************************
- * 
- * Automatically display content if using *_archive_description() introduced in WordPress 4.1!
- * 
- ****************************************************/
+/**
+ * Automatically display content if using get_archive_description() or the_archive_description() functions introduced in WordPress 4.1!
+ */
 add_filter( 'get_the_archive_description', 'ptad_archive_description' );
 
 /**
@@ -12,7 +10,7 @@ add_filter( 'get_the_archive_description', 'ptad_archive_description' );
  * @return string              post type description if on post type archive
  */
 function ptad_archive_description( $description ) {
-	if( is_post_type_archive( ptad_get_post_types() ) ) {
+	if ( is_post_type_archive( ptad_get_post_types() ) ) {
 		$description = ptad_get_post_type_description();
 	}
 	return $description;

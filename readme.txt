@@ -5,7 +5,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: custom post type, custom post types, post type archive, archives, custom post type archive
 Requires at least: 4.6
-Tested up to: 6.0
+Tested up to: 6.3
 Stable tag: 1.4.0
 
 == Description ==
@@ -109,6 +109,11 @@ Actions:
 2. The post type archive description displayed (automatically!) in the Twenty Fifteen theme. The plugin also adds the "Edit Books Description" link in the Admin Bar.
 
 == Changelog ==
+= 1.5.0 (October 20, 2023) =
+* Tested up to 6.3
+* Adjust the hook which the description is inserted on TEC and make it easier to filter that hook. props @ethanclevenger91
+* Applies all WordPress coding standards sniffs (with one small exception that I'm stuck on). Props @mgratch
+
 = 1.4.0 (June 21, 2022) =
 * Tested up to 6.0.
 * [Fix] The "Edit Archive" admin bar button was broken in the last version. It is now fixed
@@ -119,4 +124,4 @@ Actions:
 
 == Upgrade Notice ==
 = 1.4.0 =
-Tested up to WP 6.0. Restore missing "Edit Description" buttons in admin bar and description on The Events Calendar calendar page.
+Tested up to WP 6.3. Change where description appears on The Events Calendar pages. Code formatting and quality improvements.
