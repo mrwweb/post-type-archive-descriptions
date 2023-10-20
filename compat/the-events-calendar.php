@@ -8,16 +8,16 @@ function ptad_tec_description() {
 		'ptad_tribe_template_before_include',
 		'events/v2/components/before'
 	);
-	if( $before_template ) {
-	
+	if ( $before_template ) {
+
 		add_action( 'tribe_template_before_include:' . esc_attr( $before_template ), 'ptad_tribe_events_archive_header' );
 		/**
 		 * Add Title to Events Pages
 		 */
 		function ptad_tribe_events_archive_header() {
-			if(
+			if (
 				is_post_type_archive() &&
-				in_array( 'tribe_events', ptad_get_post_types() )
+				in_array( 'tribe_events', ptad_get_post_types(), true )
 			) {
 				the_archive_description( '<div class="archive-description">', '</div>' );
 			}

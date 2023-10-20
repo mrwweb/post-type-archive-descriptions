@@ -13,6 +13,7 @@
 		Once we know the sniff names, we can opt to exclude sniffs which don't
 		suit our project like so.
         -->
+		<exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
 	</rule>
 
     <config name="minimum_supported_wp_version" value="4.6"/>

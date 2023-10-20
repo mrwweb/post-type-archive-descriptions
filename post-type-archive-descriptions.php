@@ -25,11 +25,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once( 'inc/helpers.php' );
-require_once( 'inc/settings.php' );
-require_once( 'inc/admin-bar.php' );
-require_once( 'inc/template-tags.php' );
+require_once 'inc/helpers.php';
+require_once 'inc/settings.php';
+require_once 'inc/admin-bar.php';
+require_once 'inc/template-tags.php';
 
-require_once( 'compat/wordpress-core.php' );
-require_once( 'compat/qtranslate-x.php' );
-require_once( 'compat/the-events-calendar.php' );
+require_once 'compat/wordpress-core.php';
+require_once 'compat/qtranslate-x.php';
+require_once 'compat/the-events-calendar.php';
