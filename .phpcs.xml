@@ -3,9 +3,8 @@
 	<description>WordPress Code Sniffs for Post Type Archive Descriptions</description>
 
     <file>./post-type-archive-descriptions.php</file>
-    <file>./compat/qtranslate-x.php</file>
-    <file>./compat/the-events-calendar.php</file>
-    <file>./compat/wordpress-core.php</file>
+    <file>./compat/.</file>
+	<file>./inc/.</file>
 
     <rule ref="WordPress-Extra">
 		<!--
