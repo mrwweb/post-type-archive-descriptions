@@ -6,7 +6,7 @@ add_action( 'init', 'ptad_tec_description' );
 function ptad_tec_description() {
 	$before_template = apply_filters(
 		'ptad_tribe_template_before_include',
-		'events/v2/components/events-bar'
+		'events/v2/components/before'
 	);
 	if( $before_template ) {
 	
