@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Post Type Archive Descriptions" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+	<description>WordPress Code Sniffs for Post Type Archive Descriptions</description>
+
+    <file>./post-type-archive-descriptions.php</file>
+    <file>./compat/qtranslate-x.php</file>
+    <file>./compat/the-events-calendar.php</file>
+    <file>./compat/wordpress-core.php</file>
+
+    <rule ref="WordPress-Extra">
+		<!--
+		Run `phpcs` with the '-s' flag, which allows us to
+		see the names of the sniffs reporting errors.
+		Once we know the sniff names, we can opt to exclude sniffs which don't
+		suit our project like so.
+        -->
+	</rule>
+
+    <config name="minimum_supported_wp_version" value="4.6"/>
+
+    <rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="post-type-archive-descriptions"/>
+			</property>
+		</properties>
+	</rule>
+
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="ptad"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>

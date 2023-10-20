@@ -4,3 +4,4 @@
 
 .distignore
 .gitignore
+.phpcs.xml
