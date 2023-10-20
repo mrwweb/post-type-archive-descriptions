@@ -1,3 +1,16 @@
+= 1.5.0 (October 20, 2023) =
+* Tested up to 6.3
+* Adjust the hook which the description is inserted on TEC and make it easier to filter that hook. props @ethanclevenger91
+* Applies all WordPress coding standards sniffs (with one small exception that I'm stuck on). Props @mgratch
+
+= 1.4.0 (June 21, 2022) =
+* Tested up to 6.0.
+* [Fix] The "Edit Archive" admin bar button was broken in the last version. It is now fixed
+* [Fix] Prevent error when editing the Description of a post type that contains "-description" in the post type slug. Hilariously edge-casey.
+* [Fix] Restore archive description before events bar component in The Events Calendar
+* [Dev] Minor code reorganization
+* Want a way to edit the blog page? [Leave your feedback!](https://github.com/mrwweb/post-type-archive-descriptions/issues/22)
+
 = 1.3.1 (June 21, 2022) =
 * Tested up to 6.0.
 * [Fix] The "Edit Archive" admin bar button was broken in the last version. It is now fixed
